@@ -1,0 +1,55 @@
+export const allocationModels = {
+  option_a: {
+    id: 'option_a',
+    name: 'Simple 50/30/20',
+    description: 'Basic Needs, Wants, and Savings model. Best for beginners.',
+    advantages: 'Simple, easy to track.',
+    limitations: 'Does not explicitly separate debt or emergency funds.',
+    suitableFor: 'Beginners, young professionals',
+    allocations: {
+      needs: 50,
+      wants: 30,
+      savings: 20,
+    },
+  },
+  option_b: {
+    id: 'option_b',
+    name: 'Detailed Allocation',
+    description: 'Highly granular breakdown for strict tracking.',
+    advantages: 'Accounts for every aspect of spending.',
+    limitations: 'Can be overwhelming or rigid.',
+    suitableFor: 'Advanced planners',
+    allocations: {
+      rent: 25,
+      food: 10,
+      transport: 5,
+      utilities: 5,
+      healthcare: 5,
+      lifestyle: 10,
+      emergencyFund: 10,
+      savings: 10,
+      investments: 10,
+      goals: 5,
+      flexible: 5,
+    },
+  },
+  option_c: {
+    id: 'option_c',
+    name: 'Balanced Allocation',
+// OLD CODE: previous description
+//     description: 'Owner-Configured Recommendation model for a balanced financial life.',
+// REASON FOR CHANGE: Match exact description required by prompt for Option C.
+    description: 'Balanced allocation model for a balanced financial life.',
+    advantages: 'Provides explicit boundaries for investing and goals.',
+    limitations: 'May not suit extreme high or low incomes.',
+    suitableFor: 'Most salaried employees',
+    allocations: {
+      needs: 55,
+      wants: 15,
+      savings: 10,
+      investments: 10,
+      emergencyFund: 5,
+      goals: 5,
+    },
+  },
+};
