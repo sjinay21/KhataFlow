@@ -17,7 +17,6 @@ KhataFlow helps users understand their monthly income, essential expenses, lifes
 KhataFlow/
 ├── client/
 ├── server/
-├── docs/
 ├── .gitignore
 ├── README.md
 ```
@@ -25,18 +24,5 @@ KhataFlow/
 ### Folder Explanations
 - **client/**: Will contain the Next.js React frontend application.
 - **server/**: Will contain the Node.js Express backend application.
-- **docs/**: Will contain project documentation.
 
-## Project Direction
-Please refer to the `KhataFlow_Project_Direction.md` file for the complete product requirements, vision, technology stack, UI/UX direction, and strict development rules.
-
-## Development Approach
-- **Phase-by-Phase Development**: Development will occur strictly phase by phase. **Phase 1 conversion has been completed. Phase 2 has not started.**
-- **Styling System**: Tailwind CSS is the primary and required styling system. Material UI and other component libraries are strictly approval-only.
-- **Dependency Approval**: All third-party packages, including component libraries, icons, charts, and utilities, require explicit approval before installation.
-- **No Paid APIs**: The project will not use paid external APIs without explicit approval.
-- **External Resources**: Any external resource (APIs, fonts, libraries, services, integrations) requires explicit user approval before use.
-- **Code Preservation**: Existing code must be preserved. Destructive changes or blind overwrites are prohibited. If code is replaced, it will be commented out and preserved for review.
-
----
 
