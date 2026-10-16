@@ -72,6 +72,10 @@ export const updateFinancialPlan = (id, data) => customFetch(`/financialPlan/${i
   body: JSON.stringify(data)
 });
 
+export const deleteFinancialPlan = (id) => customFetch(`/financialPlan/${id}`, {
+  method: 'DELETE'
+});
+
 // Expenses
 /*
 Previous implementation:

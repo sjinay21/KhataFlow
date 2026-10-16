@@ -2,9 +2,8 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 const COLORS = [
-  '#0f172a', '#334155', '#475569', '#64748b', '#94a3b8', 
-  '#cbd5e1', '#e2e8f0', '#0ea5e9', '#0284c7', '#0369a1',
-  '#075985', '#0c4a6e'
+  '#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#ec4899', 
+  '#8b5cf6', '#14b8a6', '#f97316', '#6366f1', '#84cc16'
 ];
 
 const formatCurrency = (amount) => {

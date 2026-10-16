@@ -35,9 +35,22 @@ export default function Step3Expenses() {
 
   return (
     <div>
+      {/*
+      OLD CODE:
       <h2 className="text-xl font-semibold mb-6">Step 3: Current & Planned Expenses</h2>
       <p className="text-sm text-gray-500 mb-6">
         These values are for reference and generating personalized recommendations. They are not double-counted against your final allocations.
+      </p>
+
+      PREVIOUS ATTEMPT:
+      <h2 className="text-xl font-semibold mb-2">Let's look at your spending pattern</h2>
+      <p className="text-sm text-gray-600 mb-6">
+        Your planned expenses help us understand where your money is going and where your recommendation may need more or less allocation.
+      </p>
+      */}
+      <h2 className="text-xl font-semibold mb-2">Step 3: Current & Planned Expenses</h2>
+      <p className="text-sm text-gray-600 mb-6">
+        Tell us how you expect to use your money. We'll compare your planned expenses with your available income to understand how much room remains for other priorities.
       </p>
 
       {error && (

@@ -52,21 +52,37 @@ export default function DashboardPage() {
           let goalsCount = 0;
 
           if (planRes.ok) {
-            const data = await planRes.json();
-            if (data.success && data.data) planData = data.data;
+            try {
+              const data = await planRes.json();
+              if (data.success && data.data) planData = data.data;
+            } catch (e) {
+              console.error("Failed to parse planRes", e);
+            }
           }
           if (reportsRes.ok) {
-            const data = await reportsRes.json();
-            if (data.success && data.data) expenseTotal = data.data.totalAmount || 0;
+            try {
+              const data = await reportsRes.json();
+              if (data.summary && data.summary.totalSpending !== undefined) {
+                expenseTotal = data.summary.totalSpending;
+              }
+            } catch (e) {
+              console.error("Failed to parse reportsRes", e);
+            }
           }
           if (goalsRes.ok) {
-            const data = await goalsRes.json();
-            if (data.success && data.data) goalsCount = data.data.length || 0;
+            try {
+              const data = await goalsRes.json();
+              if (Array.isArray(data)) {
+                goalsCount = data.length;
+              }
+            } catch (e) {
+              console.error("Failed to parse goalsRes", e);
+            }
           }
 
           setDashboardData({ plan: planData, expenseTotal, goalsCount, isLoading: false });
         } catch (error) {
-          console.error("Failed to load dashboard data", error);
+          console.error("Failed to load dashboard data (top level)", error);
           setDashboardData(prev => ({ ...prev, isLoading: false }));
         }
       };

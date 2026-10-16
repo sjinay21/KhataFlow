@@ -32,7 +32,15 @@ export default function Step7Review() {
 
   return (
     <div>
+      {/* 
+      OLD CODE:
       <h2 className="text-xl font-semibold mb-6">Step 7: Review Your Financial Plan</h2>
+      
+      REASON FOR CHANGE:
+      Added contextual messaging to emphasize that Step 7 is the final confirmation stage before saving (Point 8).
+      */}
+      <h2 className="text-xl font-semibold mb-2">Step 7: Confirm your final plan</h2>
+      <p className="text-sm text-gray-600 mb-6">You've reviewed the recommendation. This is the plan that will be saved to your dashboard.</p>
 
       <div className="space-y-6">
         <section className="bg-white border rounded-lg p-5">

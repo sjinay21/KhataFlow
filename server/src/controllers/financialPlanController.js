@@ -166,6 +166,25 @@ export const updatePlan = async (req, res) => {
   });
 };
 
+// @desc    Delete active plan
+// @route   DELETE /api/v1/financial-plan/:id
+// @access  Private
+export const deletePlan = async (req, res) => {
+  const plan = await FinancialPlan.findOne({ _id: req.params.id, user: req.user.id });
+
+  if (!plan) {
+    res.status(404);
+    throw new Error('Plan not found or unauthorized');
+  }
+
+  await plan.deleteOne();
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  });
+};
+
 // @desc    Get city estimates
 // @route   GET /api/v1/city-estimates?city=mumbai
 // @access  Public

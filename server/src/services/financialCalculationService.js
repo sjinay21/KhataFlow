@@ -40,6 +40,8 @@ export const calculateAllocations = (totalIncome, userAdjustedAllocations) => {
   };
 };
 
+/*
+OLD CODE:
 export const generateOptionD = (inputs) => {
   const { monthlySalary, otherIncome, dependents, rent, emi, debtRepayment } = inputs;
   const totalIncome = Number(monthlySalary) + Number(otherIncome || 0);
@@ -104,6 +106,142 @@ export const generateOptionD = (inputs) => {
       savings,
       ...(debt > 0 && { debt })
     },
+    warnings
+  };
+};
+
+REASON FOR CHANGE:
+The old logic relied on tweaking a rigid 50/30/20 baseline and ignored the user's detailed plannedExpenses and savings priorities.
+The new logic computes actual percentages based on the user's specific granular data, making the recommendation truly personalized and generating an analysis summary.
+*/
+export const generateOptionD = (inputs) => {
+  const { monthlySalary, otherIncome, dependents, city, rent, emi, debtRepayment, plannedExpenses = {}, priorities = {} } = inputs;
+  const totalIncome = Number(monthlySalary) + Number(otherIncome || 0);
+  
+  if (!totalIncome || totalIncome <= 0) {
+    throw new Error('Valid total income is required to generate recommendations');
+  }
+
+  // 1. Calculate explicit amounts from user inputs
+  const needsAmount = 
+    Number(rent || 0) + 
+    Number(emi || 0) + 
+    Number(plannedExpenses.food || 0) + 
+    Number(plannedExpenses.transport || 0) + 
+    Number(plannedExpenses.healthcare || 0) + 
+    Number(plannedExpenses.education || 0) + 
+    Number(plannedExpenses.insurance || 0) + 
+    Number(plannedExpenses.mobileInternet || 0) +
+    Number(plannedExpenses.otherRecurring || 0);
+
+  const wantsAmount = 
+    Number(plannedExpenses.lifestyle || 0) + 
+    Number(plannedExpenses.shopping || 0);
+
+  const savingsAmount = 
+    Number(priorities.emergencyFundContribution || 0) + 
+    Number(priorities.generalSavings || 0) + 
+    Number(priorities.investments || 0);
+
+  const debtAmount = Number(debtRepayment || 0);
+
+  // 2. Base calculation
+  const totalCommitted = needsAmount + wantsAmount + debtAmount + savingsAmount;
+  let remaining = totalIncome - totalCommitted;
+
+  let finalNeeds = needsAmount;
+  let finalWants = wantsAmount;
+  let finalSavings = savingsAmount;
+  let finalDebt = debtAmount;
+
+  // 3. KhataFlow Recommendation Logic
+  if (totalCommitted === 0) {
+    // Fallback if user entered absolutely nothing
+    finalNeeds = totalIncome * 0.50;
+    finalWants = totalIncome * 0.30;
+    finalSavings = totalIncome * 0.20;
+    if (dependents > 0) {
+      finalNeeds += totalIncome * 0.10;
+      finalWants -= totalIncome * 0.10;
+    }
+  } else if (remaining > 0) {
+    // Allocate remaining: 60% to savings, 40% to wants buffer
+    finalSavings += remaining * 0.60;
+    finalWants += remaining * 0.40;
+  }
+
+  // Convert to percentages
+  let needsPct = Math.round((finalNeeds / totalIncome) * 100);
+  let wantsPct = Math.round((finalWants / totalIncome) * 100);
+  let savingsPct = Math.round((finalSavings / totalIncome) * 100);
+  let debtPct = Math.round((finalDebt / totalIncome) * 100);
+
+  // Normalize to 100 to avoid rounding issues
+  const totalPct = needsPct + wantsPct + savingsPct + debtPct;
+  if (totalPct !== 100) {
+    const diff = 100 - totalPct;
+    // Apply correction to the largest bucket to minimize impact
+    if (needsPct >= wantsPct && needsPct >= savingsPct) needsPct += diff;
+    else if (wantsPct >= savingsPct) wantsPct += diff;
+    else savingsPct += diff;
+  }
+
+  // Generate dynamic insights
+  const insights = [];
+  const commitmentsPct = Math.round(((needsAmount + debtAmount) / totalIncome) * 100);
+  
+  if (commitmentsPct > 50) {
+    insights.push(`Your essential commitments take up a high portion (${commitmentsPct}%) of your income.`);
+  } else {
+    insights.push(`Your essential commitments are well within a healthy range (${commitmentsPct}%).`);
+  }
+
+  if (savingsAmount > 0) {
+    const plannedSavingsPct = Math.round((savingsAmount / totalIncome) * 100);
+    insights.push(`You planned to save ${plannedSavingsPct}% of your income toward priorities.`);
+  }
+
+  if (dependents > 0) {
+    insights.push(`We noted you have ${dependents} dependent(s) and factored a safety margin into your needs.`);
+  }
+  
+  if (city) {
+    insights.push(`We used ${city} as a contextual reference for living costs.`);
+  }
+
+  // Generate reasoning
+  const reasoning = [];
+  reasoning.push("We secured your explicit commitments and planned expenses first.");
+  if (remaining > 0) {
+    reasoning.push(`We allocated your remaining ₹${remaining.toLocaleString('en-IN')} primarily toward accelerating your savings and providing a lifestyle buffer.`);
+  } else if (remaining < 0) {
+    reasoning.push("Since your planned expenses exceed your income, we scaled your categories to total 100% to highlight areas for reduction.");
+  }
+
+  // Analysis Summary for UI
+  const analysisSummary = {
+    totalIncome,
+    essentialCommitments: needsAmount + debtAmount,
+    availableAmount: Math.max(0, totalIncome - (needsAmount + debtAmount)),
+    insights,
+    reasoning
+  };
+
+  const warnings = [];
+  if (remaining < 0) {
+    warnings.push(`Warning: Your planned commitments exceed your income by ₹${Math.abs(remaining).toLocaleString('en-IN')}. Please review and reduce your expenses.`);
+  }
+
+  return {
+    modelId: 'option_d',
+    name: 'Personalized Recommendation',
+    allocations: {
+      needs: needsPct,
+      wants: wantsPct,
+      savings: savingsPct,
+      ...(debtPct > 0 && { debt: debtPct })
+    },
+    analysisSummary,
     warnings
   };
 };

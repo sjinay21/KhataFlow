@@ -27,7 +27,16 @@ export default function Step1BasicInfo() {
 
   return (
     <div>
+      {/* 
+      OLD CODE:
       <h2 className="text-xl font-semibold mb-6">Step 1: Basic Information</h2>
+      
+      PREVIOUS ATTEMPT:
+      <h2 className="text-xl font-semibold mb-2">Let's start with your financial picture</h2>
+      <p className="text-sm text-gray-600 mb-6">We'll use your income and basic financial situation to understand how much you can realistically allocate each month.</p>
+      */}
+      <h2 className="text-xl font-semibold mb-2">Step 1: Financial Overview</h2>
+      <p className="text-sm text-gray-600 mb-6">Tell us about your current financial picture. We'll use your income and financial commitments to understand how much of your money is already allocated and what remains available for planning.</p>
       
       {error && (
         <div className="mb-4 bg-red-50 text-red-600 p-3 rounded-md text-sm">

@@ -12,6 +12,8 @@ export default function Step2LivingSituation() {
   const { livingSituation, setLivingSituation, step, setStep, basicInfo, fetchCityEstimates, loading, plannedExpenses, setPlannedExpenses } = usePlanMyMoney();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [pendingEstimates, setPendingEstimates] = useState(null);
 
   // Clear feedback after 4 seconds
   useEffect(() => {
@@ -51,23 +53,25 @@ export default function Step2LivingSituation() {
       Object.values(plannedExpenses).some(v => v !== '');
 
     if (hasExistingData) {
+      /*
+      OLD CODE:
       const confirmOverwrite = window.confirm(
         `${data.message}\n\nDo you want to apply these new city estimates and overwrite your current entries?`
       );
       if (!confirmOverwrite) return;
-    } else {
-      /*
-      Old implementation:
-      window.alert(data.message);
-      
-      Reason for replacement:
-      Using native browser alerts creates a jarring UX.
-      Replaced with local inline success state.
-      */
-      setSuccess(data.message);
-    }
 
-    const est = data.estimates;
+      REASON FOR CHANGE:
+      Replaced destructive window.confirm with an explicit inline UI that offers "Keep My Values" and "Apply Estimates".
+      */
+      setPendingEstimates({ message: data.message, estimates: data.estimates });
+      setShowConfirm(true);
+    } else {
+      applyEstimates(data.estimates, data.message);
+    }
+  };
+
+  const applyEstimates = (est, message) => {
+    setSuccess(message);
     setLivingSituation(prev => ({ ...prev, rent: est.rent || '', utilities: est.utilities || '' }));
     setPlannedExpenses(prev => ({
       ...prev,
@@ -81,6 +85,8 @@ export default function Step2LivingSituation() {
       shopping: est.shopping || '',
       otherRecurring: est.otherRecurring || ''
     }));
+    setShowConfirm(false);
+    setPendingEstimates(null);
   };
 
   const handleNext = () => {
@@ -102,16 +108,61 @@ export default function Step2LivingSituation() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Step 2: Living Situation</h2>
+      <div className="flex justify-between items-start mb-6">
+        <div>
+          {/* 
+          OLD CODE:
+          <h2 className="text-xl font-semibold mb-6">Step 2: Living Situation</h2>
+          
+          PREVIOUS ATTEMPT:
+          <h2 className="text-xl font-semibold mb-2">Now let's understand your regular commitments</h2>
+          <p className="text-sm text-gray-600">These details help KhataFlow separate money you already need to commit from money that can be allocated toward savings, goals, and flexible spending.</p>
+          */}
+          <h2 className="text-xl font-semibold mb-2">Step 2: Living Situation</h2>
+          <p className="text-sm text-gray-600">Help us understand your fixed financial commitments. We'll use your living situation, housing costs, and utilities when evaluating your essential expenses.</p>
+        </div>
         <button
           onClick={handleFetchEstimates}
           disabled={loading}
-          className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200"
+          className="text-sm bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-md hover:bg-indigo-100 font-medium ml-4 shrink-0 mt-1"
         >
-          {loading ? 'Fetching...' : 'Auto-fill City Estimates'}
+          {loading ? 'Fetching...' : 'Fetch City Reference'}
         </button>
       </div>
+
+      {showConfirm && pendingEstimates && (
+        <div className="mb-6 bg-yellow-50 border border-yellow-200 p-4 rounded-lg shadow-sm">
+          <h4 className="font-semibold text-yellow-800 mb-2">City Reference Found</h4>
+          <p className="text-sm text-yellow-700 mb-4">
+            {pendingEstimates.message}
+            {/*
+            OLD CODE:
+            <strong>Warning:</strong> These are general estimates and may not match your actual expenses. Applying them will overwrite the values you have manually entered.
+            
+            PREVIOUS ATTEMPT:
+            <strong>Note:</strong> We use your location as a reference when evaluating your planned expenses. Applying these reference values will overwrite the entries you have manually entered.
+            */}
+            <br/><br/>
+            City estimates provide a reference point for common living costs. Your own entered expenses remain the primary input for your personalized plan.
+            <br/><br/>
+            <strong>Warning:</strong> Applying them will overwrite the values you have manually entered.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 text-sm font-medium"
+            >
+              Keep My Values
+            </button>
+            <button
+              onClick={() => applyEstimates(pendingEstimates.estimates, 'City estimates applied.')}
+              className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 text-sm font-medium"
+            >
+              Apply Estimates
+            </button>
+          </div>
+        </div>
+      )}
 
       {error && (
         <div className="mb-4 bg-red-50 text-red-600 p-3 rounded-md text-sm border border-red-100">

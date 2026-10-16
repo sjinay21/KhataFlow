@@ -40,7 +40,7 @@ export default function GoalCard({ goal, onEdit, onDelete }) {
           <Button variant="outline" onClick={() => onEdit(goal)} className="px-2 py-1 text-sm border-slate-200">
             Edit
           </Button>
-          <Button variant="danger" onClick={() => onDelete(goal)} className="px-2 py-1 text-sm bg-red-50 text-red-600 hover:bg-red-100 border-0">
+          <Button variant="danger" onClick={() => onDelete(goal)} className="px-2 py-1 text-sm border-slate-200">
             Delete
           </Button>
         </div>

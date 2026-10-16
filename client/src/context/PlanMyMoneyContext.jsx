@@ -9,7 +9,8 @@ import {
   getFinancialRecommendations, 
   getActivePlan as fetchActivePlanApi, 
   createFinancialPlan, 
-  updateFinancialPlan 
+  updateFinancialPlan,
+  deleteFinancialPlan
 } from '@/lib/api';
 
 const PlanMyMoneyContext = createContext();
@@ -206,7 +207,11 @@ export const PlanMyMoneyProvider = ({ children }) => {
         city: basicInfo.city,
         rent: livingSituation.rent,
         emi: livingSituation.emi,
-        debtRepayment: priorities.debtRepayment
+        // OLD CODE: debtRepayment: priorities.debtRepayment
+        // REASON FOR CHANGE: Added plannedExpenses and priorities so the backend can generate a personalized recommendation.
+        debtRepayment: priorities.debtRepayment,
+        plannedExpenses,
+        priorities
       });
       const data = await res.json();
       if (res.ok) {
@@ -331,6 +336,41 @@ export const PlanMyMoneyProvider = ({ children }) => {
     }
   };
 
+  const deletePlan = async () => {
+    if (!activePlan) return false;
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await deleteFinancialPlan(activePlan._id);
+      if (res.ok) {
+        // Reset all local state
+        setActivePlan(null);
+        setStep(1);
+        setBasicInfo({ city: '', locality: '', employmentType: 'Salaried', monthlySalary: '', otherIncome: '', dependents: 0, currency: 'INR' });
+        setLivingSituation({ housingType: 'rent', rent: '', emi: '', utilities: '', familyContribution: '' });
+        setPlannedExpenses({ food: '', transport: '', healthcare: '', education: '', insurance: '', mobileInternet: '', lifestyle: '', shopping: '', otherRecurring: '' });
+        setPriorities({ emergencyFundTarget: '', emergencyFundContribution: '', generalSavings: '', investments: '', debtRepayment: '' });
+        setGoals([]);
+        setSelectedModel(null);
+        setAllocations([]);
+        setCalculatedSummary(null);
+        
+        router.push('/plan-my-money/onboarding');
+        return true;
+      } else {
+        const data = await res.json();
+        setError(data.message || 'Failed to delete plan');
+        return false;
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Unexpected error occurred while deleting.');
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Real-time calculation helpers
   const totalIncome = Number(basicInfo.monthlySalary || 0) + Number(basicInfo.otherIncome || 0);
 
@@ -377,7 +417,7 @@ export const PlanMyMoneyProvider = ({ children }) => {
       allocations, handleAllocationChange,
       currentTotalPercentage, totalIncome, calculateAmount,
       generateOptionD, fetchCityEstimates,
-      savePlan, fetchActivePlan, activePlan,
+      savePlan, fetchActivePlan, activePlan, deletePlan,
       loading, error
     }}>
       {children}

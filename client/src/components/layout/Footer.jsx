@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 /*
 // OLD CODE: previous implementation preserved for project history.
@@ -14,6 +17,7 @@ import Link from 'next/link';
 // REASON FOR CHANGE: Phase 7 Footer UI polish. Removed em dash, added Company links (About/Contact), improved grid layout, and made copyright text slightly smaller. Also updated information architecture to match standard SaaS footer layout (Product, App, Company).
 */
 export default function Footer() {
+  const { user, logout } = useAuth();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -38,32 +42,22 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/#features" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/#how-it-works" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link href="/plan-my-money" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                <Link href={user ? "/plan-my-money" : "/login"} className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
                   Plan My Money
                 </Link>
               </li>
               <li>
-                <Link href="/expenses" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                <Link href={user ? "/expenses" : "/login"} className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
                   My Expenses
                 </Link>
               </li>
               <li>
-                <Link href="/reports" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                <Link href={user ? "/reports" : "/login"} className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
                   Reports
                 </Link>
               </li>
               <li>
-                <Link href="/goals" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                <Link href={user ? "/goals" : "/login"} className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
                   Goals
                 </Link>
               </li>
@@ -76,21 +70,33 @@ export default function Footer() {
               App
             </h3>
             <ul className="space-y-3">
-              <li>
-                <Link href="/login" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link href="/register" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
-                  Register
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
-                  Dashboard
-                </Link>
-              </li>
+              {user ? (
+                <>
+                  <li>
+                    <Link href="/dashboard" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={logout} className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors text-left w-full">
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link href="/login" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/register" className="text-slate-600 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md transition-colors">
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 

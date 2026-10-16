@@ -4,7 +4,8 @@ import {
   generateRecommendation,
   createPlan,
   getActivePlan,
-  updatePlan
+  updatePlan,
+  deletePlan
 } from '../controllers/financialPlanController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -20,6 +21,7 @@ router.get('/models', getModels);
 router.post('/recommendations', generateRecommendation);
 
 router.route('/:id')
-  .put(updatePlan);
+  .put(updatePlan)
+  .delete(deletePlan);
 
 export default router;

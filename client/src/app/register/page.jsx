@@ -103,7 +103,7 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-              placeholder="you@example.com"
+              placeholder="xyz@gmail.com"
             />
           </div>
           <div>
@@ -115,7 +115,6 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-              placeholder="••••••••"
               minLength={6}
             />
           </div>
@@ -125,7 +124,7 @@ export default function RegisterPage() {
         </form>
 
         <p className="mt-6 text-sm text-slate-600">
-          Already have an account?{' '}
+          Already have an account?
           <Link href="/login" className="font-medium text-primary-600 hover:text-primary-500">
             Log in
           </Link>

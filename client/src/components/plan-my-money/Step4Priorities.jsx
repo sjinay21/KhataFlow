@@ -69,7 +69,16 @@ export default function Step4Priorities() {
 
   return (
     <div>
+      {/* 
+      OLD CODE:
       <h2 className="text-xl font-semibold mb-6">Step 4: Savings & Priorities</h2>
+      
+      PREVIOUS ATTEMPT:
+      <h2 className="text-xl font-semibold mb-2">Finally, tell us what matters most to you</h2>
+      <p className="text-sm text-gray-600 mb-6">Your priorities help KhataFlow decide how the amount left after essential commitments should be distributed.</p>
+      */}
+      <h2 className="text-xl font-semibold mb-2">Step 4: Savings & Priorities</h2>
+      <p className="text-sm text-gray-600 mb-6">Tell us what matters most to you. Your priorities will influence how KhataFlow distributes the amount available after your essential commitments.</p>
 
       {error && (
         <div className="mb-4 bg-red-50 text-red-600 p-3 rounded-md text-sm">

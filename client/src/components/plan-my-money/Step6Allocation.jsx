@@ -39,7 +39,11 @@ export default function Step6Allocation() {
 
   return (
     <div>
+      {/* OLD CODE:
       <h2 className="text-xl font-semibold mb-2">Step 6: Adjust Allocations</h2>
+      REASON FOR CHANGE: Framing the step as a review and adjustment of KhataFlow's recommendation. */}
+      <h2 className="text-xl font-semibold mb-2">Step 6: Review & Adjust Your Recommendation</h2>
+      <p className="text-sm text-gray-500 mb-6">This is KhataFlow's starting recommendation. You can adjust these percentages before saving your plan.</p>
       <p className="text-sm text-gray-500 mb-6">Total Income: <span className="font-semibold text-gray-900">{formatINR(totalIncome)}</span></p>
 
       {error && (

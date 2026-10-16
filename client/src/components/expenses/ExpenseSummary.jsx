@@ -18,21 +18,21 @@ export default function ExpenseSummary({ expenses }) {
   };
 
   return (
-    <Card className="p-6 mb-8 bg-slate-900 text-white shadow-md border-none">
+    <Card className="mb-8 shadow-sm">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1 border-b md:border-b-0 md:border-r border-slate-700 pb-6 md:pb-0 md:pr-6 flex flex-col justify-center">
-          <h2 className="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Total Expenses</h2>
-          <p className="text-4xl font-bold text-white">{formatINR(total)}</p>
+        <div className="md:col-span-1 border-b md:border-b-0 md:border-r border-slate-200 pb-6 md:pb-0 md:pr-6 flex flex-col justify-center">
+          <h2 className="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Total Expenses</h2>
+          <p className="text-4xl font-bold text-slate-900">{formatINR(total)}</p>
           <p className="text-xs text-slate-400 mt-2">Based on current filters</p>
         </div>
         <div className="md:col-span-2">
-          <h3 className="text-sm font-semibold text-slate-300 mb-3">Top Categories</h3>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3">Top Categories</h3>
           {sortedCategories.length > 0 ? (
             <div className="space-y-2">
               {sortedCategories.map(([category, amount]) => (
                 <div key={category} className="flex justify-between items-center text-sm">
-                  <span className="text-slate-300">{category}</span>
-                  <span className="font-medium text-white">{formatINR(amount)}</span>
+                  <span className="text-slate-600">{category}</span>
+                  <span className="font-medium text-slate-900">{formatINR(amount)}</span>
                 </div>
               ))}
             </div>

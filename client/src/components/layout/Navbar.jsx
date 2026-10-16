@@ -38,7 +38,7 @@ export default function Navbar() {
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md">
+            <Link href={user ? "/dashboard" : "/"} className="text-2xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md">
               KhataFlow
             </Link>
           </div>
@@ -174,6 +174,8 @@ export default function Navbar() {
               How It Works
             </Link>
             */}
+            {/* 
+            OLD CODE:
             <Link 
               href="/about" 
               className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 ${pathname === '/about' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
@@ -189,32 +191,6 @@ export default function Navbar() {
               Contact
             </Link>
             <div className="mt-4 pt-4 border-t border-slate-200">
-              {/* 
-              // OLD CODE: previous implementation preserved for project history.
-              // <Link href="/login" className="block w-full text-center px-4 py-2 text-base font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 mb-2" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
-              // <Link href="/register" className="block w-full text-center px-4 py-2 text-base font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500" onClick={() => setIsMobileMenuOpen(false)}>Get Started</Link>
-              // REASON FOR CHANGE: Implement conditional rendering for mobile authentication state (Phase 3).
-              */}
-              {/* 
-              // OLD CODE: previous implementation preserved for project history.
-              // {user ? (
-              //   <>
-              //     <Link 
-              //       href="/plan-my-money" 
-              //       className="block w-full text-center px-4 py-2 text-base font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 mb-2"
-              //       onClick={() => setIsMobileMenuOpen(false)}
-              //     >
-              //       Plan My Money
-              //     </Link>
-              //     <Link 
-              //       href="/dashboard" 
-              //       className="block w-full text-center px-4 py-2 text-base font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 mb-2"
-              //       onClick={() => setIsMobileMenuOpen(false)}
-              //     >
-              //       Dashboard
-              //     </Link>
-              // REASON FOR CHANGE: Add My Expenses link to mobile menu for Phase 5.
-              */}
               {user ? (
                 <>
                   <Link 
@@ -281,6 +257,94 @@ export default function Navbar() {
                 </>
               )}
             </div>
+            
+            REASON FOR CHANGE: 
+            Point 9: Hide public navigation (About/Contact) from authenticated users in the mobile menu, just like on desktop.
+            */}
+            {user ? (
+              <>
+                <Link 
+                  href="/dashboard" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 mb-1 ${pathname === '/dashboard' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  href="/plan-my-money" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 mb-1 ${pathname === '/plan-my-money' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Plan My Money
+                </Link>
+                <Link 
+                  href="/expenses" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 mb-1 ${pathname === '/expenses' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  My Expenses
+                </Link>
+                <Link 
+                  href="/reports" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 mb-1 ${pathname === '/reports' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Reports
+                </Link>
+                <Link 
+                  href="/goals" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 mb-4 ${pathname === '/goals' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Goals
+                </Link>
+                
+                <div className="pt-4 border-t border-slate-200">
+                  <button 
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-center px-4 py-2 text-base font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <Link 
+                  href="/about" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 ${pathname === '/about' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  About
+                </Link>
+                <Link 
+                  href="/contact" 
+                  className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 ${pathname === '/contact' ? 'text-primary-700 bg-primary-50' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+                <div className="mt-4 pt-4 border-t border-slate-200">
+                  <Link 
+                    href="/login" 
+                    className="block w-full text-center px-4 py-2 text-base font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 mb-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    href="/register" 
+                    className="block w-full text-center px-4 py-2 text-base font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              </>
+            )}
           </nav>
         </div>
       )}

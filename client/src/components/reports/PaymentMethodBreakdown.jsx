@@ -1,5 +1,10 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const COLORS = [
+  '#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#ec4899', 
+  '#8b5cf6', '#14b8a6', '#f97316', '#6366f1', '#84cc16'
+];
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-IN', {
@@ -54,7 +59,11 @@ export default function PaymentMethodBreakdown({ data }) {
               cursor={{fill: '#f8fafc'}}
               contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}
             />
-            <Bar dataKey="amount" fill="#334155" radius={[0, 4, 4, 0]} barSize={24} />
+            <Bar dataKey="amount" radius={[0, 4, 4, 0]} barSize={24}>
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>

@@ -90,7 +90,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-              placeholder="you@example.com"
+              placeholder="xyz@gmail.com"
             />
           </div>
           <div>
@@ -102,7 +102,6 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-              placeholder="••••••••"
             />
           </div>
           <Button type="submit" variant="primary" className="w-full justify-center" disabled={isSubmitting}>

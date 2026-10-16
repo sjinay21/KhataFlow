@@ -13,7 +13,7 @@ export default function Button({
   const variants = {
     primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
     secondary: 'bg-slate-200 text-slate-900 hover:bg-slate-300 focus:ring-slate-500',
-    danger: 'bg-danger-500 text-white hover:bg-red-600 focus:ring-danger-500',
+    danger: 'bg-red-600 text-white hover:bg-danger-500 focus:ring-danger-500',
     ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 focus:ring-slate-500',
     link: 'bg-transparent text-primary-600 hover:underline p-0 focus:ring-primary-500',
     // Added inverse variant because passing conflicting color classes via className 
